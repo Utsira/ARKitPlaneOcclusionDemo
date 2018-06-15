@@ -10,71 +10,99 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController {
 
     @IBOutlet var sceneView: ARSCNView!
-    
+    private let pictureNode = SCNScene(named: "art.scnassets/scene.scn")!.rootNode.childNodes.first!
+	private var didFinishLoading = false
+	
+	// MARK: - View lifecycle
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set the view's delegate
         sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-        
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
+        let scene = SCNScene()
+		scene.lightingEnvironment.contents = #imageLiteral(resourceName: "PaperMill_E_Env")
         sceneView.scene = scene
+		sceneView.prepare([pictureNode]) {
+			[weak self] didSucceed in
+			self?.didFinishLoading = didSucceed
+		}
+		let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+		sceneView.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-
-        // Run the view's session
-        sceneView.session.run(configuration)
+        resetTracking()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
         sceneView.session.pause()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
+	private func resetTracking() {
+		sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+		let configuration = ARWorldTrackingConfiguration()
+		configuration.planeDetection = [.vertical, .horizontal]
+		sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+	}
+	
+	// MARK: - Gestures
+	
+	override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+		guard motion == .motionShake else { return }
+		resetTracking()
+	}
+	
+	@objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+		let point = gesture.location(in: gesture.view)
+		guard didFinishLoading, let arResult = sceneView.hitTest(point, types: .existingPlaneUsingExtent).first else { return }
+		pictureNode.simdTransform = arResult.worldTransform
+		pictureNode.simdScale = float3(0.002)
+		sceneView.scene.rootNode.addChildNode(pictureNode)
+	}
+}
 
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
+// MARK: - PlaneOccluding
+
+extension ViewController: PlaneOccluding {
+	func outlineColorForPlane(_ plane: ARPlaneAnchor) -> UIColor {
+		let color = abs(plane.transform.up)
+		return UIColor(red: CGFloat(color.x), green: CGFloat(color.y), blue: CGFloat(color.z), alpha: 0.8)
+	}
+	
+	func outlineWidthForPlane(_ plane: ARPlaneAnchor) -> Measurement<UnitLength> {
+		return Measurement(value: 5, unit: UnitLength.millimeters)
+	}
+}
+
+// MARK: - ARSCNViewDelegate
+
+extension ViewController: ARSCNViewDelegate {
+
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+		return createOcclusionPlane(renderer: renderer, anchor: anchor, hasOutline: true)
     }
-*/
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
-    }
+	
+	func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+		updateOcclusionPlane(node: node, anchor: anchor)
+	}
+
+	func session(_ session: ARSession, didFailWithError error: Error) {
+		// Present an error message to the user
+		
+	}
+	
+	func sessionWasInterrupted(_ session: ARSession) {
+		// Inform the user that the session has been interrupted, for example, by presenting an overlay
+		
+	}
+	
+	func sessionInterruptionEnded(_ session: ARSession) {
+		resetTracking()
+	}
+
 }

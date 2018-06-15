@@ -13,7 +13,8 @@
 		51E3878D20D3EDBD0073AD65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51E3878B20D3EDBD0073AD65 /* Main.storyboard */; };
 		51E3878F20D3EDBF0073AD65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51E3878E20D3EDBF0073AD65 /* Assets.xcassets */; };
 		51E3879220D3EDBF0073AD65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51E3879020D3EDBF0073AD65 /* LaunchScreen.storyboard */; };
-		51E3879D20D3EDBF0073AD65 /* PictureHangingDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E3879C20D3EDBF0073AD65 /* PictureHangingDemoTests.swift */; };
+		51E387A820D3EEA70073AD65 /* PlaneOccluding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E387A720D3EEA70073AD65 /* PlaneOccluding.swift */; };
+		51E387AA20D3F0B90073AD65 /* simd+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E387A920D3F0B90073AD65 /* simd+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,8 +37,8 @@
 		51E3879120D3EDBF0073AD65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51E3879320D3EDBF0073AD65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51E3879820D3EDBF0073AD65 /* PictureHangingDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureHangingDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		51E3879C20D3EDBF0073AD65 /* PictureHangingDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureHangingDemoTests.swift; sourceTree = "<group>"; };
-		51E3879E20D3EDBF0073AD65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51E387A720D3EEA70073AD65 /* PlaneOccluding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaneOccluding.swift; sourceTree = "<group>"; };
+		51E387A920D3F0B90073AD65 /* simd+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "simd+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				51E3878420D3EDBD0073AD65 /* PictureHangingDemo */,
-				51E3879B20D3EDBF0073AD65 /* PictureHangingDemoTests */,
 				51E3878320D3EDBD0073AD65 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,21 +82,14 @@
 				51E3878520D3EDBD0073AD65 /* AppDelegate.swift */,
 				51E3878720D3EDBD0073AD65 /* art.scnassets */,
 				51E3878920D3EDBD0073AD65 /* ViewController.swift */,
+				51E387A720D3EEA70073AD65 /* PlaneOccluding.swift */,
+				51E387A920D3F0B90073AD65 /* simd+Extensions.swift */,
 				51E3878B20D3EDBD0073AD65 /* Main.storyboard */,
 				51E3878E20D3EDBF0073AD65 /* Assets.xcassets */,
 				51E3879020D3EDBF0073AD65 /* LaunchScreen.storyboard */,
 				51E3879320D3EDBF0073AD65 /* Info.plist */,
 			);
 			path = PictureHangingDemo;
-			sourceTree = "<group>";
-		};
-		51E3879B20D3EDBF0073AD65 /* PictureHangingDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				51E3879C20D3EDBF0073AD65 /* PictureHangingDemoTests.swift */,
-				51E3879E20D3EDBF0073AD65 /* Info.plist */,
-			);
-			path = PictureHangingDemoTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,7 +194,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51E387AA20D3F0B90073AD65 /* simd+Extensions.swift in Sources */,
 				51E3878A20D3EDBD0073AD65 /* ViewController.swift in Sources */,
+				51E387A820D3EEA70073AD65 /* PlaneOccluding.swift in Sources */,
 				51E3878620D3EDBD0073AD65 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,7 +205,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51E3879D20D3EDBF0073AD65 /* PictureHangingDemoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,7 +356,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = NQCH2PR9CA;
 				INFOPLIST_FILE = PictureHangingDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -370,6 +365,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltpig.PictureHangingDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "60633714-7a16-472b-b931-61de88357b54";
+				PROVISIONING_PROFILE_SPECIFIER = "Personal Wildcard Dev Profile";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -379,7 +376,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = PictureHangingDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -387,6 +385,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltpig.PictureHangingDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
