@@ -28,6 +28,7 @@ extension PlaneOccluding {
 		// the secret sauce for occluding geometry:
 		maskMaterial.colorBufferWriteMask = []
 		geometry.materials = [maskMaterial]
+		node.renderingOrder = -1
 		if hasOutline,
 			let outlineNode = outlineNodeForPlane(plane, device: device) {
 			node.addChildNode(outlineNode)
@@ -64,7 +65,7 @@ extension PlaneOccluding {
 		outlineGeometry.update(from: plane.geometry)
 		outlineGeometry.materials = [outlineMaterialForPlane(plane)]
 		outlineNode.simdScale = outlineScaleForPlane(plane)
-		// place the outline 1 millimeter behind the occlusion geometry
+		// place the outline 2 millimeter behind the occlusion geometry
 		outlineNode.simdPosition = float3(0, -0.002, 0)
 		return outlineNode
 	}

@@ -29,6 +29,7 @@ class ViewController: UIViewController {
 			[weak self] didSucceed in
 			self?.didFinishLoading = didSucceed
 		}
+		pictureNode.simdScale = float3(0.002)
 		let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
 		sceneView.addGestureRecognizer(tap)
     }
@@ -59,10 +60,11 @@ class ViewController: UIViewController {
 	
 	@objc private func handleTap(_ gesture: UITapGestureRecognizer) {
 		let point = gesture.location(in: gesture.view)
-		guard didFinishLoading, let arResult = sceneView.hitTest(point, types: .existingPlaneUsingExtent).first else { return }
-		pictureNode.simdTransform = arResult.worldTransform
-		pictureNode.simdScale = float3(0.002)
-		sceneView.scene.rootNode.addChildNode(pictureNode)
+		guard didFinishLoading,
+			let arResult = sceneView.hitTest(point, types: .existingPlaneUsingExtent).first,
+			let anchor = arResult.anchor,
+			let node = sceneView.node(for: anchor) else { return }
+		node.addChildNode(pictureNode)
 	}
 }
 
