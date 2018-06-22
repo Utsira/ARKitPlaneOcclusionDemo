@@ -66,6 +66,7 @@ class ViewController: UIViewController {
 		pictureNode.simdTransform = arResult.localTransform
 		pictureNode.simdScale = float3(0.002)
 		node.addChildNode(pictureNode)
+		sceneView.debugOptions = []
 	}
 }
 
