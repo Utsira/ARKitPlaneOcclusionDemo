@@ -79,6 +79,6 @@ extension PlaneOccluding {
 	
 	private func outlineScaleForPlane(_ plane: ARPlaneAnchor) -> float3 {
 		let strokeWidth = Float(outlineWidthForPlane(plane).converted(to: .meters).value)
-		return float3(1 + (strokeWidth / plane.extent.x), 0, 1 + (strokeWidth / plane.extent.z))
+		return float3(1 + (strokeWidth / plane.extent.x), 1, 1 + (strokeWidth / plane.extent.z))
 	}
 }
